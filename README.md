@@ -112,6 +112,10 @@ Default local ports:
 - Telemetry ingestion: `http://localhost:8081`
 - Policy service: `http://localhost:8082`
 
+Root status pages:
+- `http://localhost:8081/`
+- `http://localhost:8082/`
+
 ## How to view the backend
 There is no UI yet. You can verify it via logs and HTTP requests:
 

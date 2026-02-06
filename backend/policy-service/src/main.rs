@@ -5,6 +5,7 @@ use axum::{
     extract::{Query, State},
     http::StatusCode,
     http::{header::AUTHORIZATION, HeaderMap},
+    response::Html,
     routing::{get, post},
     Json, Router,
 };
@@ -53,6 +54,7 @@ async fn main() {
     seed_default_policy(&state);
 
     let app = Router::new()
+        .route("/", get(root_status))
         .route("/v1/policies/current", get(get_policy))
         .route("/v1/policies", get(list_policies).post(upsert_policy))
         .route("/v1/policies/versions", get(list_policy_versions))
@@ -86,6 +88,19 @@ async fn get_policy(
 
     let policy = default_policy(&query.app_id, &query.app_version, &query.env);
     Ok(Json(policy))
+}
+
+async fn root_status(State(state): State<AppState>) -> (StatusCode, Html<String>) {
+    match check_db(&state) {
+        Ok(()) => (
+            StatusCode::OK,
+            Html("<h1>Hey PantherSecurity backend is working!</h1>".to_string()),
+        ),
+        Err(err) => (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Html(format!("<h1>Backend error: {}</h1>", err)),
+        ),
+    }
 }
 
 async fn upsert_policy(
@@ -273,6 +288,16 @@ fn init_db(path: &str) -> Result<Connection, rusqlite::Error> {
     )?;
 
     Ok(conn)
+}
+
+fn check_db(state: &AppState) -> Result<(), String> {
+    let conn = state
+        .db
+        .lock()
+        .map_err(|_| "db_lock".to_string())?;
+    conn.execute("SELECT 1", [])
+        .map_err(|err| err.to_string())?;
+    Ok(())
 }
 
 #[derive(serde::Serialize)]

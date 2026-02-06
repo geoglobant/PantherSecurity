@@ -6,6 +6,8 @@ use axum::{
     http::StatusCode,
     http::{header::AUTHORIZATION, HeaderMap},
     routing::post,
+    routing::get,
+    response::Html,
     Json, Router,
 };
 use chrono::Utc;
@@ -33,6 +35,7 @@ async fn main() {
     };
 
     let app = Router::new()
+        .route("/", get(root_status))
         .route("/v1/telemetry/events", post(ingest_event))
         .with_state(state);
 
@@ -70,6 +73,19 @@ async fn ingest_event(
     Ok(Json(StatusOk { status: "ok".to_string() }))
 }
 
+async fn root_status(State(state): State<AppState>) -> (StatusCode, Html<String>) {
+    match check_db(&state) {
+        Ok(()) => (
+            StatusCode::OK,
+            Html("<h1>Hey PantherSecurity backend is working!</h1>".to_string()),
+        ),
+        Err(err) => (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Html(format!("<h1>Backend error: {}</h1>", err)),
+        ),
+    }
+}
+
 #[derive(serde::Serialize)]
 struct StatusOk {
     status: String,
@@ -91,6 +107,16 @@ fn init_db(path: &str) -> Result<Connection, rusqlite::Error> {
     )?;
 
     Ok(conn)
+}
+
+fn check_db(state: &AppState) -> Result<(), String> {
+    let conn = state
+        .db
+        .lock()
+        .map_err(|_| "db_lock".to_string())?;
+    conn.execute("SELECT 1", [])
+        .map_err(|err| err.to_string())?;
+    Ok(())
 }
 
 fn require_auth(
