@@ -65,26 +65,13 @@ Initial monorepo skeleton. Components are still stubbed.
   - `aarch64-apple-ios`
   - `aarch64-apple-ios-sim`
 - Xcode + Command Line Tools
-- Tuist (project generator for Xcode)
+- Tuist (project generator for Xcode). Install: `brew install tuist`
 - Android Studio (with a recent JDK/Gradle)
 
 Quick checks:
 ```bash
 rustc --version
 rustup target list --installed
-tuist --version
-```
-
-## Tuist (what it is and how to install)
-Tuist is a project generator for Xcode. It reads `Project.swift` and generates the `.xcodeproj` and workspace.
-
-Install options:
-```bash
-brew install tuist
-```
-
-Verify:
-```bash
 tuist --version
 ```
 
@@ -95,63 +82,20 @@ scripts/run-backend.sh
 ```
 
 ### iOS SDK + Sample
-1. Build the Rust core xcframework:
+1. From the repo root, build the Rust core xcframework:
    ```bash
-   scripts/install-ios-xcframework.sh
+   ./scripts/install-ios-xcframework.sh
    ```
+   This creates `mobile/ios/sampleIOS/Frameworks/PantherSecurityCore.xcframework`.
+
 2. Generate the Xcode project for the sample:
    ```bash
    cd mobile/ios/sampleIOS
    tuist generate
    ```
 3. Open `mobile/ios/sampleIOS/MobileAppSecSample.xcworkspace` in Xcode.
-
-### Run in Xcode (step-by-step)
-1. From the repo root, generate the Rust xcframework:
-   ```bash
-   cd /Users/george.michelon/Desktop/PantherSecurity
-   ./scripts/install-ios-xcframework.sh
-   ```
-2. Generate the Xcode project with Tuist:
-   ```bash
-   cd mobile/ios/sampleIOS
-   tuist generate
-   ```
-3. Open the workspace:
-   ```
-   mobile/ios/sampleIOS/MobileAppSecSample.xcworkspace
-   ```
 4. Select the `MobileAppSecSample` target and run on an iOS simulator.
 5. If you see linker errors (`_ps_*`), rebuild the xcframework and re-run `tuist generate`.
-
-### How the iOS build flow works
-1. **Generate the Rust framework**  
-   Run from repo root:
-   ```bash
-   ./scripts/install-ios-xcframework.sh
-   ```
-   This script builds the Rust core for device + simulator and copies
-   `PantherSecurityCore.xcframework` into `mobile/ios/sampleIOS/Frameworks`.
-
-2. **Generate the Xcode project with Tuist**  
-   Tuist reads `mobile/ios/sampleIOS/Project.swift` and wires the local Swift package plus the xcframework:
-   ```bash
-   cd mobile/ios/sampleIOS
-   tuist generate
-   ```
-
-3. **Install in Xcode**  
-   Open `mobile/ios/sampleIOS/MobileAppSecSample.xcworkspace`.
-   In **Target > General > Frameworks, Libraries, and Embedded Content**, confirm
-   `PantherSecurityCore.xcframework` is listed (Embed & Sign).
-
-4. **If you get linker errors (_ps_*)**  
-   Re-run the script and regenerate the project:
-   ```bash
-   ./scripts/install-ios-xcframework.sh
-   cd mobile/ios/sampleIOS
-   tuist generate
-   ```
 
 ### Android Sample
 #### Run in Android Studio (step-by-step)
