@@ -177,7 +177,7 @@ fn parse_policy_rule(rule: &FfiPolicyRule) -> Result<PolicyRule, ()> {
     })
 }
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn ps_evaluate_rule(
     action: FfiStr,
     app_version: FfiStr,
@@ -273,7 +273,7 @@ pub extern "C" fn ps_evaluate_rule(
     }
 }
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn ps_evaluate_policy(
     policy: *const FfiPolicySet,
     action: FfiStr,
@@ -380,7 +380,7 @@ pub extern "C" fn ps_evaluate_policy(
     }
 }
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn ps_pinning_is_allowed(pinset: FfiPinset, presented_hash: FfiStr) -> u8 {
     let current = match str_array_from_ffi(pinset.current) {
         Ok(values) => values,

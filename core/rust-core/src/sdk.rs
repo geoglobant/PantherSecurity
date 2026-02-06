@@ -8,7 +8,7 @@ use crate::domain::telemetry::{
     ActionContext, AttestationResult, DeviceInfo, IntegritySignals, Platform, SessionInfo,
     TelemetryAuth, TelemetryEnvelope, TelemetryEvent,
 };
-use crate::ports::{Clock, CryptoSigner, PolicyStore, PortError, RiskScorer, TelemetrySink};
+use crate::ports::{Clock, CryptoSigner, PortError, RiskScorer};
 use crate::CoreService;
 
 #[derive(Clone, Debug)]
@@ -185,5 +185,6 @@ impl RiskScorer for SimpleRiskScorer {
 
 fn uuid() -> String {
     // Simple unique-ish placeholder. Replace with UUID generator when needed.
-    format!("evt-{}", Utc::now().timestamp_nanos())
+    let ts = Utc::now().timestamp_nanos_opt().unwrap_or(0);
+    format!("evt-{}", ts)
 }

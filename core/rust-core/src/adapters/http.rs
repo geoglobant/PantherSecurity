@@ -103,10 +103,10 @@ impl HttpTelemetryClient {
             .map_err(|err| PortError::new(err.to_string()))
     }
 
-    fn auth_token(&self, auth: &TelemetryAuth) -> Option<&str> {
+    fn auth_token(&self, auth: &TelemetryAuth) -> Option<String> {
         auth.api_token
-            .as_deref()
-            .or_else(|| self.config.api_token.as_deref())
+            .clone()
+            .or_else(|| self.config.api_token.clone())
     }
 }
 

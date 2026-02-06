@@ -1,28 +1,28 @@
 # API Contracts (Draft)
 
-Este documento fornece exemplos e orientacoes iniciais. A especificacao formal esta em:
+This document provides examples and initial guidance. The formal specification is in:
 - `docs/openapi.yaml`
 
-Este documento descreve contratos iniciais entre SDK, Agent/CLI e Backend.
+This document describes initial contracts between SDK, Agent/CLI, and Backend.
 
-## Principios
+## Principles
 - JSON over HTTPS
-- Versionamento por caminho: `/v1/...`
-- Idempotencia para eventos: `event_id`
-- Assinatura de payload (SDK) e autenticacao forte (mTLS ou JWT)
-- Compatibilidade forward: campos desconhecidos devem ser ignorados
+- Path-based versioning: `/v1/...`
+- Idempotency for events: `event_id`
+- Payload signing (SDK) and strong authentication (mTLS or JWT)
+- Forward compatibility: unknown fields must be ignored
 
-## Autenticacao
-- **SDK**: token por app + assinatura do payload (HMAC ou assinatura assimetrica do device).
-- **Agent/CLI**: token por pipeline/servico ou mTLS.
-- **Header**: `Authorization: Bearer <token>` (exigido quando `API_TOKEN` esta definido no backend).
+## Authentication
+- **SDK**: token per app + payload signature (HMAC or device asymmetric signature).
+- **Agent/CLI**: token per pipeline/service or mTLS.
+- **Header**: `Authorization: Bearer <token>` (required when `API_TOKEN` is set on the backend).
 
 ## Telemetry Ingestion
 
 ### POST /v1/telemetry/events
-Recebe eventos assinados do SDK.
+Receives signed events from the SDK.
 
-**Request (exemplo)**
+**Request (example)**
 ```json
 {
   "event_id": "evt_01HXYZ...",
@@ -64,7 +64,7 @@ Recebe eventos assinados do SDK.
 ```
 
 ### GET /v1/policies/current
-Distribui a politica atual para app/versao/ambiente.
+Distributes the current policy for app/version/environment.
 
 **Request (query)**
 - `app_id`
@@ -72,7 +72,7 @@ Distribui a politica atual para app/versao/ambiente.
 - `env`
 - `device_platform`
 
-**Response (exemplo)**
+**Response (example)**
 ```json
 {
   "policy_id": "pol_01HXYZ...",
@@ -102,9 +102,9 @@ Distribui a politica atual para app/versao/ambiente.
 ```
 
 ### GET /v1/policies
-Lista policies armazenadas. Filtros opcionais por `app_id`, `app_version`, `env`, `device_platform`.
+List stored policies. Optional filters by `app_id`, `app_version`, `env`, `device_platform`.
 
-**Response (exemplo)**
+**Response (example)**
 ```json
 [
   {
@@ -132,9 +132,9 @@ Lista policies armazenadas. Filtros opcionais por `app_id`, `app_version`, `env`
 ```
 
 ### GET /v1/policies/versions
-Lista versoes historicas de policies. Filtros opcionais por `app_id`, `app_version`, `env`, `device_platform`.
+List historical policy versions. Optional filters by `app_id`, `app_version`, `env`, `device_platform`.
 
-**Response (exemplo)**
+**Response (example)**
 ```json
 [
   {
@@ -163,9 +163,9 @@ Lista versoes historicas de policies. Filtros opcionais por `app_id`, `app_versi
 ```
 
 ### POST /v1/policies
-Cria ou atualiza uma policy para app/versao/ambiente.
+Create or update a policy for app/version/environment.
 
-**Request (exemplo)**
+**Request (example)**
 ```json
 {
   "device_platform": "ios",
@@ -198,9 +198,9 @@ Cria ou atualiza uma policy para app/versao/ambiente.
 ## Agent Report Upload
 
 ### POST /v1/reports/upload
-Upload de relatorios do Agent/CLI (JSON ou SARIF).
+Upload reports from Agent/CLI (JSON or SARIF).
 
-**Request (exemplo)**
+**Request (example)**
 ```json
 {
   "report_id": "rep_01HXYZ...",
@@ -224,7 +224,7 @@ Upload de relatorios do Agent/CLI (JSON ou SARIF).
 { "status": "accepted" }
 ```
 
-## Modelos de dados (minimos)
+## Data models (minimal)
 
 ### Policy Rule
 ```json
@@ -238,7 +238,7 @@ Upload de relatorios do Agent/CLI (JSON ou SARIF).
 }
 ```
 
-### Findings (agregado)
+### Findings (aggregated)
 ```json
 {
   "category": "backend_tls",
@@ -250,7 +250,7 @@ Upload de relatorios do Agent/CLI (JSON ou SARIF).
 }
 ```
 
-## Proximos passos
-- Evoluir o OpenAPI com validacoes mais estritas
-- Definir politicas versionadas e assinadas
-- Definir modelos de risco e correlacao
+## Next steps
+- Evolve OpenAPI with stricter validations
+- Define versioned and signed policies
+- Define risk models and correlation

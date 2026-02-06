@@ -1,78 +1,79 @@
 # Roadmap
 
-Este roadmap foca em obter um MVP funcional com sinais de runtime, correlacao basica e enforcement de politicas.
-Este documento sera atualizado a cada entrega relevante.
+This roadmap focuses on delivering a functional MVP with runtime signals, basic correlation, and policy enforcement.
+This document is updated on each relevant delivery.
 
-## Fase 0 - Fundacao (2 a 4 semanas)
-- Estrutura do monorepo e padroes de arquitetura.
-- Contratos iniciais entre SDK, Agent e Backend.
-- OpenAPI inicial para telemetria, policy e upload de reports.
-- Esqueleto do Rust core (C ABI, modelos de telemetria, policy engine base).
-- Esqueleto do Agent/CLI com pipeline de plugins.
-- Esqueleto do Backend (telemetry ingestion + policy service).
+## Phase 0 - Foundation (2 to 4 weeks)
+- Monorepo structure and architecture patterns.
+- Initial contracts between SDK, Agent, and Backend.
+- Initial OpenAPI for telemetry, policy, and report upload.
+- Rust core skeleton (C ABI, telemetry models, base policy engine).
+- Agent/CLI skeleton with plugin pipeline.
+- Backend skeleton (telemetry ingestion + policy service).
 
-## Fase 1 - MVP (4 a 6 semanas)
-- SDK: inicializacao/config, policy fetch, risk signals basicos, pinning.
+## Phase 1 - MVP (4 to 6 weeks)
+- SDK: initialization/config, policy fetch, basic risk signals, pinning.
 - SDK: decision engine (ALLOW / STEP_UP / DENY).
-- Backend: endpoint de ingestao de eventos e distribuicao de policy.
-- Backend: storage simples.
+- Backend: event ingestion endpoint and policy distribution.
+- Backend: simple storage.
 - Agent CLI: `agent scan perimeter`, `agent scan rate-limit`, `agent scan authz`, `agent scan mobile-build`, `agent report`.
 
-## Fase 2 - MVP CI/CD + Correlacao (4 a 6 semanas)
-- Agent/CLI com checks de backend (TLS/HSTS/headers, CORS, rate limiting).
-- Checks estaticos de build mobile (ATS/entitlements/manifest).
-- Export JSON e SARIF.
-- Correlacao basica entre findings do Agent e runtime.
+## Phase 2 - MVP CI/CD + Correlation (4 to 6 weeks)
+- Agent/CLI with backend checks (TLS/HSTS/headers, CORS, rate limiting).
+- Static mobile build checks (ATS/entitlements/manifest).
+- Export JSON and SARIF.
+- Basic correlation between Agent findings and runtime signals.
 
-## Fase 3 - Endurecimento (6 a 8 semanas)
-- Attestation completa (App Attest / Play Integrity).
-- Policy engine mais expressivo (regras condicionais).
-- Risk score server-side com pesos por sinal.
-- Kill switch e modo leitura para incident response.
-- Observabilidade e trilhas de auditoria.
+## Phase 3 - Hardening (6 to 8 weeks)
+- Full attestation (App Attest / Play Integrity).
+- More expressive policy engine (conditional rules).
+- Server-side risk score with per-signal weights.
+- Kill switch and read-only mode for incident response.
+- Observability and audit trails.
 
-## Fora de escopo (por enquanto)
-- Detecao avancada de fraude e ML.
-- Remediacao automatica no pipeline.
-- Marketplace publico de plugins.
+## Out of scope (for now)
+- Advanced fraud detection and ML.
+- Automated remediation in the pipeline.
+- Public plugin marketplace.
 
-## Metricas de sucesso (MVP)
-- 90% das acoes sensiveis cobertas por enforcement.
-- Tempo de propagacao de politica < 2 minutos.
-- Alertas de runtime correlacionados com findings do CI/CD.
+## Success metrics (MVP)
+- 90% of sensitive actions covered by enforcement.
+- Policy propagation time < 2 minutes.
+- Runtime alerts correlated with CI/CD findings.
 
-## Atualizacoes recentes
-- 2026-02-06: DESTAQUE - Script para copiar xcframework no sample iOS em `scripts/install-ios-xcframework.sh`.
-- 2026-02-06: DESTAQUE - Script para gerar xcframework iOS do core Rust em `scripts/build-ios-xcframework.sh`.
-- 2026-02-06: DESTAQUE - SDK renomeado para PantherSecurity (Swift package e samples atualizados).
-- 2026-02-06: DESTAQUE - Wrapper Swift via FFI para core Rust (policy + pinning).
-- 2026-02-06: DESTAQUE - Projeto Android iniciado com arquitetura clean equivalente.
-- 2026-02-06: DESTAQUE - Sample iOS com Xcode project gerado (Tuist) em `mobile/ios/sampleIOS`.
-- 2026-02-06: DESTAQUE - Projeto iOS inicial com Clean Architecture e SDK integrado para testes.
-- 2026-02-06: DESTAQUE - Logica de pinning SPKI com rotacao adicionada ao core SDK.
-- 2026-02-06: DESTAQUE - SDK core com init/config, policy fetch e sinais baseline em `core/rust-core/src/sdk.rs`.
-- 2026-02-06: DESTAQUE - Core HTTP adapter suporta `POST /v1/policies` (admin upsert).
-- 2026-02-06: DESTAQUE - Policy upsert agora retorna `stored_at` no backend.
-- 2026-02-06: DESTAQUE - Adapter HTTP no core para telemetria e policy fetch.
-- 2026-02-06: DESTAQUE - Backend agora registra historico de policies e expõe `/v1/policies/versions`.
-- 2026-02-06: DESTAQUE - Testes basicos adicionados ao policy-service.
-- 2026-02-06: DESTAQUE - Listagem de policies via `GET /v1/policies`.
-- 2026-02-06: DESTAQUE - SDK core agora suporta auth via `TelemetryAuth`/`TelemetryEnvelope`.
-- 2026-02-06: DESTAQUE - Endpoint administrativo de policy adicionado em `/v1/policies`.
-- 2026-02-06: DESTAQUE - Autenticacao basica via `Authorization: Bearer` nos servicos backend.
-- 2026-02-06: DESTAQUE - Agent CLI agora aceita `--token` para `agent report`.
-- 2026-02-06: DESTAQUE - Agent CLI agora envia `agent report` para `/v1/reports/upload`.
-- 2026-02-06: DESTAQUE - Storage simples com SQLite para eventos, policies e reports.
-- 2026-02-06: DESTAQUE - Scripts locais para subir backend em `scripts/run-backend.sh`.
-- 2026-02-06: Esqueleto do monorepo criado.
-- 2026-02-06: Documentos iniciais (arquitetura, contratos e roadmap) publicados.
-- 2026-02-06: OpenAPI draft disponivel em `docs/openapi.yaml`.
-- 2026-02-06: Esqueleto do Rust core (hexagonal) criado em `core/rust-core`.
-- 2026-02-06: Stubs de C ABI/FFI adicionados ao core em `core/rust-core/src/adapters/ffi.rs`.
-- 2026-02-06: Modelos de serializacao (DTOs) alinhados ao OpenAPI adicionados em `core/rust-core/src/adapters/serialization.rs`.
-- 2026-02-06: FFI expandido para avaliar PolicySet e regras em lote no core.
-- 2026-02-06: Serializacao strict com validacoes (deny unknown fields + validadores) no core.
-- 2026-02-06: Esqueleto do Agent/CLI com pipeline de plugins em `agent/cli`.
-- 2026-02-06: Documento de MVP publicado em `docs/mvp.md`.
-- 2026-02-06: Comandos basicos do Agent CLI definidos (`scan` e `report`).
-- 2026-02-06: Stubs de backend criados para ingestao de eventos e distribuicao de policy.
+## Recent updates
+- 2026-02-06: HIGHLIGHT - Project documentation and READMEs standardized to English.
+- 2026-02-06: HIGHLIGHT - Script to copy xcframework into the iOS sample at `scripts/install-ios-xcframework.sh`.
+- 2026-02-06: HIGHLIGHT - Script to build iOS xcframework from Rust core at `scripts/build-ios-xcframework.sh`.
+- 2026-02-06: HIGHLIGHT - SDK renamed to PantherSecurity (Swift package and samples updated).
+- 2026-02-06: HIGHLIGHT - Swift wrapper via FFI for Rust core (policy + pinning).
+- 2026-02-06: HIGHLIGHT - Android project started with equivalent clean architecture.
+- 2026-02-06: HIGHLIGHT - iOS sample with Xcode project generated (Tuist) at `mobile/ios/sampleIOS`.
+- 2026-02-06: HIGHLIGHT - Initial iOS project with Clean Architecture and SDK integrated for testing.
+- 2026-02-06: HIGHLIGHT - SPKI pinning logic with rotation added to core SDK.
+- 2026-02-06: HIGHLIGHT - Core SDK with init/config, policy fetch, and baseline signals in `core/rust-core/src/sdk.rs`.
+- 2026-02-06: HIGHLIGHT - Core HTTP adapter supports `POST /v1/policies` (admin upsert).
+- 2026-02-06: HIGHLIGHT - Policy upsert now returns `stored_at` in the backend.
+- 2026-02-06: HIGHLIGHT - Core HTTP adapter for telemetry and policy fetch.
+- 2026-02-06: HIGHLIGHT - Backend now stores policy history and exposes `/v1/policies/versions`.
+- 2026-02-06: HIGHLIGHT - Basic tests added to policy-service.
+- 2026-02-06: HIGHLIGHT - Policy listing via `GET /v1/policies`.
+- 2026-02-06: HIGHLIGHT - Core SDK now supports auth via `TelemetryAuth`/`TelemetryEnvelope`.
+- 2026-02-06: HIGHLIGHT - Admin policy endpoint added at `/v1/policies`.
+- 2026-02-06: HIGHLIGHT - Basic auth via `Authorization: Bearer` in backend services.
+- 2026-02-06: HIGHLIGHT - Agent CLI now accepts `--token` for `agent report`.
+- 2026-02-06: HIGHLIGHT - Agent CLI now sends `agent report` to `/v1/reports/upload`.
+- 2026-02-06: HIGHLIGHT - Simple storage with SQLite for events, policies, and reports.
+- 2026-02-06: HIGHLIGHT - Local scripts to run backend at `scripts/run-backend.sh`.
+- 2026-02-06: Monorepo skeleton created.
+- 2026-02-06: Initial documents (architecture, contracts, roadmap) published.
+- 2026-02-06: OpenAPI draft available at `docs/openapi.yaml`.
+- 2026-02-06: Rust core skeleton (hexagonal) created at `core/rust-core`.
+- 2026-02-06: C ABI/FFI stubs added to core at `core/rust-core/src/adapters/ffi.rs`.
+- 2026-02-06: Serialization models (DTOs) aligned to OpenAPI added at `core/rust-core/src/adapters/serialization.rs`.
+- 2026-02-06: FFI expanded to evaluate PolicySet and batch rules in core.
+- 2026-02-06: Strict serialization with validations (deny unknown fields + validators) in core.
+- 2026-02-06: Agent/CLI skeleton with plugin pipeline in `agent/cli`.
+- 2026-02-06: MVP document published at `docs/mvp.md`.
+- 2026-02-06: Agent CLI basic commands defined (`scan` and `report`).
+- 2026-02-06: Backend stubs created for event ingestion and policy distribution.

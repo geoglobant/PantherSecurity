@@ -1,16 +1,16 @@
 # Android Sample (Clean Architecture)
 
-Projeto Android inicial com estrutura equivalente ao iOS (Domain/Data/Presentation) e um SDK stub.
+Initial Android project with structure equivalent to iOS (Domain/Data/Presentation) and an SDK stub.
 
-## Como abrir
-1. Abra `mobile/android` no Android Studio.
-2. Aguarde o Gradle sync.
+## How to open
+1. Open `mobile/android` in Android Studio.
+2. Wait for Gradle sync.
 
-## Estrutura
-- `domain/`: entidades e use cases
-- `data/`: repositorios
+## Structure
+- `domain/`: entities and use cases
+- `data/`: repositories
 - `presentation/`: view model
 - `sdk/`: PantherSecurity SDK (stub)
 
-## Observacao
-O SDK Android ainda e stub e deve ser conectado ao core Rust/FFI futuramente.
+## Note
+The Android SDK is still a stub and must be connected to the Rust core/FFI later.

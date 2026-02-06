@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		336C1FD240B928213591C74A /* PantherSecurityCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74EA0ACB06454688707AA2C7 /* PantherSecurityCore.xcframework */; };
 		5EE68BB0471A1519AAE55481 /* PantherSecurity in Frameworks */ = {isa = PBXBuildFile; productRef = ADD4367B22F1400DC2D2C4BC /* PantherSecurity */; };
 		F8077D7C1DC3D8D47D4CF493 /* SampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57863AD27FD4842632C67C9 /* SampleApp.swift */; };
 /* End PBXBuildFile section */
@@ -27,7 +28,8 @@
 /* Begin PBXFileReference section */
 		2AA12EFDEA3D790629ED9A05 /* MobileAppSecSample-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "MobileAppSecSample-Info.plist"; sourceTree = "<group>"; };
 		5E44E14533A90BF3EFB2C69E /* MobileAppSecSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MobileAppSecSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		97C5BDC1579A81F2FC4BB3B4 /* ios */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ios; path = ../../mobile/ios; sourceTree = "<group>"; };
+		74EA0ACB06454688707AA2C7 /* PantherSecurityCore.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = PantherSecurityCore.xcframework; sourceTree = "<group>"; };
+		97C5BDC1579A81F2FC4BB3B4 /* ios */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ios; path = ..; sourceTree = "<group>"; };
 		C57863AD27FD4842632C67C9 /* SampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -36,6 +38,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				336C1FD240B928213591C74A /* PantherSecurityCore.xcframework in Frameworks */,
 				5EE68BB0471A1519AAE55481 /* PantherSecurity in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -84,6 +87,14 @@
 			);
 			sourceTree = "<group>";
 		};
+		8319B5ABCBA8665884C1C0A0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				74EA0ACB06454688707AA2C7 /* PantherSecurityCore.xcframework */,
+			);
+			path = Frameworks;
+			sourceTree = "<group>";
+		};
 		B35E550CA83C6B4E18383DCE /* Derived */ = {
 			isa = PBXGroup;
 			children = (
@@ -104,6 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				B35E550CA83C6B4E18383DCE /* Derived */,
+				8319B5ABCBA8665884C1C0A0 /* Frameworks */,
 				03879BBE6CDBECE7F6D6265F /* Sources */,
 			);
 			name = Project;
@@ -153,7 +165,7 @@
 			);
 			mainGroup = 682E9E61E92B721CEB449398;
 			packageReferences = (
-				5C31DC4CCB7383DCB7BB64AE /* XCLocalSwiftPackageReference ".." */,
+				42FD431303E8AFA0475AC0AE /* XCLocalSwiftPackageReference ".." */,
 			);
 			productRefGroup = 5BB6B8ADAE57FB24310B204F /* Products */;
 			projectDirPath = "";
@@ -305,6 +317,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/Frameworks",
+				);
 				INFOPLIST_FILE = "Derived/InfoPlists/MobileAppSecSample-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -335,6 +351,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/Frameworks",
+				);
 				INFOPLIST_FILE = "Derived/InfoPlists/MobileAppSecSample-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -378,7 +398,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		5C31DC4CCB7383DCB7BB64AE /* XCLocalSwiftPackageReference ".." */ = {
+		42FD431303E8AFA0475AC0AE /* XCLocalSwiftPackageReference ".." */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ..;
 		};

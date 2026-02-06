@@ -52,9 +52,9 @@ impl PolicyRule {
             return false;
         }
 
-        if let Some(required) = self.conditions.attestation_status {
+        if let Some(required) = &self.conditions.attestation_status {
             match attestation {
-                Some(att) if att.status == required => {}
+                Some(att) if &att.status == required => {}
                 _ => return false,
             }
         }

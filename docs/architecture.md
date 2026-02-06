@@ -1,83 +1,83 @@
-# Arquitetura de Alto Nivel
+# High-Level Architecture
 
-## Visao geral
-A plataforma combina tres pilares:
-1. **SDK Mobile** (iOS + Android) para protecao em runtime.
-2. **Security Agent / CLI** para verificacoes de CI/CD e backend.
-3. **Policy + Telemetry Backend** para correlacao, risk scoring e distribuicao de politicas.
+## Overview
+The platform combines three pillars:
+1. **Mobile SDK** (iOS + Android) for runtime protection.
+2. **Security Agent / CLI** for CI/CD and backend checks.
+3. **Policy + Telemetry Backend** for correlation, risk scoring, and policy distribution.
 
-O foco inicial e fintechs, priorizando acoes sensiveis (login, refresh token, transferencias, Pix, beneficiarios, dados de cartao e alteracao de credenciais).
+The initial focus is fintechs, prioritizing sensitive actions (login, refresh token, transfers, Pix, beneficiaries, card data, and credential changes).
 
-## Componentes
+## Components
 
 ### 1) Mobile SDK
-**Core em Rust** com wrappers:
+**Rust core** with wrappers:
 - Swift (iOS)
 - Kotlin (Android)
 
-Responsabilidades:
-- Pinning TLS (SPKI com rotacao)
+Responsibilities:
+- TLS pinning (SPKI with rotation)
 - Secure storage (Keychain / Keystore)
-- Signals de integridade (jailbreak/root, debugger/hooking, proxy/MITM)
-- Attestation (App Attest e Play Integrity)
-- Engine local de politicas (em Rust)
-- Enforcement por acao (ALLOW, STEP_UP, DEGRADE, DENY)
-- Telemetria assinada
+- Integrity signals (jailbreak/root, debugger/hooking, proxy/MITM)
+- Attestation (App Attest and Play Integrity)
+- Local policy engine (in Rust)
+- Action enforcement (ALLOW, STEP_UP, DEGRADE, DENY)
+- Signed telemetry
 
 ### 2) Security Agent / CLI (Rust)
-Executa em CI/CD ou servidores.
+Runs in CI/CD or servers.
 
-Capacidades:
-- Scanning de backend (TLS/HSTS/headers, CORS, rate limiting, authZ invariants, refresh token replay)
+Capabilities:
+- Backend scanning (TLS/HSTS/headers, CORS, rate limiting, authZ invariants, refresh token replay)
 - OpenAPI/GraphQL checks
-- Orquestracao de SAST e SCA/SBOM
+- SAST and SCA/SBOM orchestration
 - Secret scanning
-- Checks estaticos de build mobile (entitlements, ATS, manifest, cleartext, debuggable)
+- Static mobile build checks (entitlements, ATS, manifest, cleartext, debuggable)
 
-Saidas:
+Outputs:
 - JSON
 - SARIF
-- Upload para Policy Backend
+- Upload to Policy Backend
 
 ### 3) Policy + Telemetry Backend
-Servicos principais:
-- **Telemetry Ingestion**: recebe eventos do SDK e relatorios do Agent.
-- **Policy Service**: calcula risk score, correlaciona sinais, distribui politicas.
+Main services:
+- **Telemetry Ingestion**: receives SDK events and Agent reports.
+- **Policy Service**: computes risk score, correlates signals, distributes policies.
 
-Politicas sao segmentadas por:
+Policies are segmented by:
 - app
-- versao
-- ambiente
+- version
+- environment
 
-Exemplos:
-- Bloquear transferencias em uma versao vulneravel
-- Exigir STEP_UP para login
-- Modo leitura para incident response
+Examples:
+- Block transfers on a vulnerable version
+- Require STEP_UP for login
+- Read-only mode for incident response
 
-## Fluxos principais
+## Main flows
 
 ### 1) Runtime
-1. SDK coleta sinais locais e executa attestation.
-2. SDK envia telemetria assinada para ingestao.
-3. Policy Service correlaciona e calcula risk score.
-4. Politicas retornam ao app e sao avaliadas localmente.
-5. Engine de politicas decide ALLOW/STEP_UP/DEGRADE/DENY.
+1. SDK collects local signals and executes attestation.
+2. SDK sends signed telemetry to ingestion.
+3. Policy Service correlates and computes risk score.
+4. Policies return to the app and are evaluated locally.
+5. Policy engine decides ALLOW/STEP_UP/DEGRADE/DENY.
 
-### 2) CI/CD e Backend
-1. Agent/CLI executa testes e scans no pipeline.
-2. Relatorios gerados (JSON/SARIF).
-3. Upload para Policy Backend.
-4. Correlacao com runtime para reforco dinamico de politicas.
+### 2) CI/CD and Backend
+1. Agent/CLI runs tests and scans in the pipeline.
+2. Reports generated (JSON/SARIF).
+3. Upload to Policy Backend.
+4. Correlation with runtime for dynamic policy reinforcement.
 
-## Interfaces e contratos
-- **Rust Core <-> Mobile**: C ABI para wrappers Swift/Kotlin.
-- **SDK <-> Backend**: API de telemetria e distribuicao de politicas.
-- **Agent <-> Backend**: API de upload de relatorios.
-- **Plugin system**: extensao de checks no Agent/CLI.
+## Interfaces and contracts
+- **Rust Core <-> Mobile**: C ABI for Swift/Kotlin wrappers.
+- **SDK <-> Backend**: telemetry and policy distribution API.
+- **Agent <-> Backend**: report upload API.
+- **Plugin system**: check extensions in Agent/CLI.
 
-## Principios
+## Principles
 - Clean Architecture
 - Monorepo
-- Core Rust com arquitetura hexagonal (ports/adapters)
-- Separacao clara entre coleta, correlacao e enforcement
-- Politicas assinadas e versionadas
+- Rust core with hexagonal architecture (ports/adapters)
+- Clear separation between collection, correlation, and enforcement
+- Signed and versioned policies

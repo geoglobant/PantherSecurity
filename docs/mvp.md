@@ -1,28 +1,28 @@
-# MVP Esperado (Fase 1)
+# Expected MVP (Phase 1)
 
-Este documento descreve o MVP esperado para a primeira fase do produto.
+This document describes the expected MVP for the first product phase.
 
 ## SDK
-- [x] Inicializacao e configuracao (core)
+- [x] Initialization and configuration (core)
 - [x] Policy fetch (core)
-- [x] Risk signals basicos (baseline)
-- [x] Pinning (logica de SPKI com rotacao no core)
+- [x] Basic risk signals (baseline)
+- [x] Pinning (SPKI logic with rotation in core)
 - [x] Decision engine (ALLOW / STEP_UP / DENY)
-- [x] Projeto iOS inicial com Clean Architecture e SDK integrado (HTTP)
-- [x] SDK PantherSecurity com wrapper Swift via FFI (policy + pinning)
+- [x] Initial iOS project with Clean Architecture and integrated SDK (HTTP)
+- [x] PantherSecurity SDK with Swift wrapper via FFI (policy + pinning)
 
 ## Android
-- [x] Projeto Android inicial com Clean Architecture equivalente (stub)
+- [x] Initial Android project with equivalent Clean Architecture (stub)
 
 ## Agent CLI
-Comandos esperados:
+Expected commands:
 - [x] `agent scan perimeter` (stub)
 - [x] `agent scan rate-limit` (stub)
 - [x] `agent scan authz` (stub)
 - [x] `agent scan mobile-build` (stub)
-- [x] `agent report` (upload para backend)
+- [x] `agent report` (upload to backend)
 
 ## Backend
-- [x] Endpoint de ingestao de eventos
-- [x] Endpoint de distribuicao de policy
-- [x] Storage simples (SQLite)
+- [x] Event ingestion endpoint
+- [x] Policy distribution endpoint
+- [x] Simple storage (SQLite)
