@@ -80,6 +80,11 @@ tuist --version
 ```bash
 scripts/run-backend.sh
 ```
+Run a single service:
+```bash
+scripts/run-backend.sh telemetry
+scripts/run-backend.sh policy
+```
 
 ### iOS SDK + Sample
 1. From the repo root, build the Rust core xcframework:
