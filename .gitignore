@@ -1,10 +1,31 @@
-*.iml
-.gradle
-.idea
+# macOS
 .DS_Store
-build
-captures
-.externalNativeBuild
-.cxx
-local.properties
-xcuserdata
+
+# Xcode
+**/DerivedData/
+**/Derived/
+**/xcuserdata/
+**/*.xcuserstate
+
+# SwiftPM / Tuist
+**/.swiftpm/
+**/.build/
+**/.tuist-generated
+
+# Rust
+**/target/
+
+# Android / Gradle
+**/.gradle/
+**/build/
+
+# Artifacts
+artifacts/
+mobile/ios/sampleIOS/Frameworks/
+
+# Logs / temp
+*.log
+*.tmp
+
+# Env
+.env

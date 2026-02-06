@@ -1,0 +1,434 @@
+openapi: 3.0.3
+info:
+  title: Mobile AppSec Platform API
+  version: 0.1.0
+  description: |
+    Draft OpenAPI for telemetry ingestion, policy distribution, and agent report upload.
+servers:
+  - url: https://api.example.com
+    description: Production (placeholder)
+  - url: https://staging-api.example.com
+    description: Staging (placeholder)
+
+security:
+  - bearerAuth: []
+
+paths:
+  /v1/telemetry/events:
+    post:
+      summary: Ingest telemetry events from mobile SDK
+      operationId: ingestTelemetryEvent
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TelemetryEvent'
+      responses:
+        '200':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusOk'
+
+  /v1/policies/current:
+    get:
+      summary: Fetch current policy for app/version/environment
+      operationId: getCurrentPolicy
+      parameters:
+        - name: app_id
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: app_version
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: env
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: device_platform
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [ios, android]
+      responses:
+        '200':
+          description: Current policy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Policy'
+
+  /v1/policies:
+    get:
+      summary: List stored policies
+      operationId: listPolicies
+      parameters:
+        - name: app_id
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: app_version
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: env
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: device_platform
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [ios, android]
+      responses:
+        '200':
+          description: List of policies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PolicyRecord'
+    post:
+      summary: Create or update a policy for an app/version/environment
+      operationId: upsertPolicy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PolicyUpsert'
+      responses:
+        '200':
+          description: Upserted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyUpsertResponse'
+
+  /v1/policies/versions:
+    get:
+      summary: List policy versions
+      operationId: listPolicyVersions
+      parameters:
+        - name: app_id
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: app_version
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: env
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: device_platform
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [ios, android]
+      responses:
+        '200':
+          description: List of policy versions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PolicyVersionRecord'
+
+  /v1/reports/upload:
+    post:
+      summary: Upload Agent/CLI reports (JSON or SARIF)
+      operationId: uploadReport
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportUpload'
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusAccepted'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Provide `Authorization: Bearer <token>` when API_TOKEN is configured.
+
+  schemas:
+    StatusOk:
+      type: object
+      properties:
+        status:
+          type: string
+          example: ok
+      required: [status]
+
+    StatusAccepted:
+      type: object
+      properties:
+        status:
+          type: string
+          example: accepted
+      required: [status]
+
+    TelemetryEvent:
+      type: object
+      properties:
+        event_id:
+          type: string
+        app_id:
+          type: string
+        app_version:
+          type: string
+        env:
+          type: string
+        device:
+          $ref: '#/components/schemas/DeviceInfo'
+        session:
+          $ref: '#/components/schemas/SessionInfo'
+        signals:
+          $ref: '#/components/schemas/IntegritySignals'
+        attestation:
+          $ref: '#/components/schemas/AttestationResult'
+        action:
+          $ref: '#/components/schemas/ActionContext'
+        timestamp:
+          type: string
+          format: date-time
+        signature:
+          type: string
+          description: Base64-encoded signature of the payload
+      required:
+        - event_id
+        - app_id
+        - app_version
+        - env
+        - device
+        - signals
+        - action
+        - timestamp
+        - signature
+
+    DeviceInfo:
+      type: object
+      properties:
+        platform:
+          type: string
+          enum: [ios, android]
+        os_version:
+          type: string
+        model:
+          type: string
+      required: [platform, os_version, model]
+
+    SessionInfo:
+      type: object
+      properties:
+        session_id:
+          type: string
+        user_id_hash:
+          type: string
+      required: [session_id]
+
+    IntegritySignals:
+      type: object
+      properties:
+        jailbreak:
+          type: boolean
+        root:
+          type: boolean
+        debugger:
+          type: boolean
+        hooking:
+          type: boolean
+        proxy_detected:
+          type: boolean
+      required: [debugger, hooking, proxy_detected]
+
+    AttestationResult:
+      type: object
+      properties:
+        provider:
+          type: string
+          enum: [app_attest, play_integrity, none]
+        result:
+          type: string
+          enum: [pass, fail, unknown]
+        timestamp:
+          type: string
+          format: date-time
+      required: [provider, result]
+
+    ActionContext:
+      type: object
+      properties:
+        name:
+          type: string
+          example: transfer
+        context:
+          type: string
+          example: pix
+      required: [name]
+
+    Policy:
+      type: object
+      properties:
+        policy_id:
+          type: string
+        app_id:
+          type: string
+        app_version:
+          type: string
+        env:
+          type: string
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyRule'
+        signature:
+          type: string
+        issued_at:
+          type: string
+          format: date-time
+      required: [policy_id, app_id, app_version, env, rules, signature, issued_at]
+
+    PolicyRule:
+      type: object
+      properties:
+        action:
+          type: string
+        decision:
+          type: string
+          enum: [ALLOW, STEP_UP, DEGRADE, DENY]
+        conditions:
+          type: object
+          additionalProperties: true
+      required: [action, decision]
+
+    ReportUpload:
+      type: object
+      properties:
+        report_id:
+          type: string
+        app_id:
+          type: string
+        env:
+          type: string
+        source:
+          type: string
+          enum: [ci, server]
+        pipeline:
+          $ref: '#/components/schemas/PipelineInfo'
+        artifacts:
+          $ref: '#/components/schemas/ReportArtifacts'
+        findings:
+          type: array
+          items:
+            $ref: '#/components/schemas/Finding'
+        timestamp:
+          type: string
+          format: date-time
+      required: [report_id, app_id, env, source, artifacts, timestamp]
+
+    PipelineInfo:
+      type: object
+      properties:
+        provider:
+          type: string
+        run_id:
+          type: string
+      required: [provider, run_id]
+
+    ReportArtifacts:
+      type: object
+      properties:
+        format:
+          type: string
+          enum: [json, sarif]
+        payload:
+          type: string
+          description: Base64-encoded report payload
+      required: [format, payload]
+
+    Finding:
+      type: object
+      properties:
+        category:
+          type: string
+        severity:
+          type: string
+          enum: [low, medium, high, critical]
+        evidence:
+          type: object
+          additionalProperties: true
+      required: [category, severity]
+    PolicyUpsert:
+      type: object
+      properties:
+        device_platform:
+          type: string
+          enum: [ios, android]
+        policy:
+          $ref: '#/components/schemas/Policy'
+      required: [device_platform, policy]
+    PolicyUpsertResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: ok
+        stored_at:
+          type: string
+          format: date-time
+      required: [status, stored_at]
+    PolicyRecord:
+      type: object
+      properties:
+        device_platform:
+          type: string
+          enum: [ios, android]
+        policy:
+          $ref: '#/components/schemas/Policy'
+      required: [device_platform, policy]
+    PolicyVersionRecord:
+      type: object
+      properties:
+        device_platform:
+          type: string
+          enum: [ios, android]
+        stored_at:
+          type: string
+          format: date-time
+        policy:
+          $ref: '#/components/schemas/Policy'
+      required: [device_platform, stored_at, policy]
