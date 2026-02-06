@@ -188,7 +188,7 @@ async fn upload_report(
         .map_err(|err| (StatusCode::INTERNAL_SERVER_ERROR, err.to_string()))?;
     let received_at = Utc::now().to_rfc3339();
 
-    let mut conn = state.db.lock().unwrap();
+    let conn = state.db.lock().unwrap();
     conn.execute(
         "INSERT OR IGNORE INTO reports (report_id, payload, received_at) VALUES (?1, ?2, ?3)",
         params![payload.report_id, payload_json, received_at],

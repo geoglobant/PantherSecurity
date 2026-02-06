@@ -65,13 +65,26 @@ Initial monorepo skeleton. Components are still stubbed.
   - `aarch64-apple-ios`
   - `aarch64-apple-ios-sim`
 - Xcode + Command Line Tools
-- Tuist
+- Tuist (project generator for Xcode)
 - Android Studio (with a recent JDK/Gradle)
 
 Quick checks:
 ```bash
 rustc --version
 rustup target list --installed
+tuist --version
+```
+
+## Tuist (what it is and how to install)
+Tuist is a project generator for Xcode. It reads `Project.swift` and generates the `.xcodeproj` and workspace.
+
+Install options:
+```bash
+brew install tuist
+```
+
+Verify:
+```bash
 tuist --version
 ```
 
@@ -92,6 +105,24 @@ scripts/run-backend.sh
    tuist generate
    ```
 3. Open `mobile/ios/sampleIOS/MobileAppSecSample.xcworkspace` in Xcode.
+
+### Run in Xcode (step-by-step)
+1. From the repo root, generate the Rust xcframework:
+   ```bash
+   cd /Users/george.michelon/Desktop/PantherSecurity
+   ./scripts/install-ios-xcframework.sh
+   ```
+2. Generate the Xcode project with Tuist:
+   ```bash
+   cd mobile/ios/sampleIOS
+   tuist generate
+   ```
+3. Open the workspace:
+   ```
+   mobile/ios/sampleIOS/MobileAppSecSample.xcworkspace
+   ```
+4. Select the `MobileAppSecSample` target and run on an iOS simulator.
+5. If you see linker errors (`_ps_*`), rebuild the xcframework and re-run `tuist generate`.
 
 ### How the iOS build flow works
 1. **Generate the Rust framework**  
@@ -123,17 +154,57 @@ scripts/run-backend.sh
    ```
 
 ### Android Sample
-Open `mobile/android` in Android Studio and run the app.
+#### Run in Android Studio (step-by-step)
+1. Open Android Studio.
+2. Select **Open** and choose `mobile/android`.
+3. Wait for Gradle sync to finish.
+4. Select an emulator or a connected device.
+5. Run the `app` configuration.
+
+If Gradle sync fails, make sure you have a recent JDK and Android SDK installed.
 
 ## Local endpoints
 Default local ports:
 - Telemetry ingestion: `http://localhost:8081`
 - Policy service: `http://localhost:8082`
 
+## How to view the backend
+There is no UI yet. You can verify it via logs and HTTP requests:
+
+Check policy service:
+```bash
+curl "http://localhost:8082/v1/policies/current?app_id=fintech.mobile&app_version=1.0.0&env=prod&device_platform=ios"
+```
+
+Send telemetry:
+```bash
+curl -X POST "http://localhost:8081/v1/telemetry/events" \
+  -H "Content-Type: application/json" \
+  -d '{"event_id":"evt_local","app_id":"fintech.mobile","app_version":"1.0.0","env":"local","device":{"platform":"ios","os_version":"17.0","model":"iPhone"},"signals":{"jailbreak":false,"root":false,"debugger":false,"hooking":false,"proxy_detected":false},"action":{"name":"login","context":null},"timestamp":"2026-02-06T21:00:00Z","signature":"stub"}'
+```
+
+Quick smoke test (policy + telemetry):
+```bash
+curl "http://localhost:8082/v1/policies/current?app_id=fintech.mobile&app_version=1.0.0&env=prod&device_platform=ios" \
+  && curl -X POST "http://localhost:8081/v1/telemetry/events" \
+    -H "Content-Type: application/json" \
+    -d '{"event_id":"evt_smoke","app_id":"fintech.mobile","app_version":"1.0.0","env":"local","device":{"platform":"ios","os_version":"17.0","model":"iPhone"},"signals":{"jailbreak":false,"root":false,"debugger":false,"hooking":false,"proxy_detected":false},"action":{"name":"login","context":null},"timestamp":"2026-02-06T21:00:00Z","signature":"stub"}'
+```
+
+DB files are stored under `data/`:
+- `data/telemetry.db`
+- `data/policy.db`
+
 ## Troubleshooting
 - **No space left on device**: remove build artifacts (Rust targets, SwiftPM caches) and retry.
 - **Undefined symbol: _ps_***: rebuild the xcframework and regenerate the Xcode project.
 - **Rust build fails on first run**: ensure network access for crate downloads.
+- **Address already in use (8081/8082)**: stop existing processes (Ctrl+C) or kill them:
+  ```bash
+  lsof -nP -iTCP:8081 -sTCP:LISTEN
+  lsof -nP -iTCP:8082 -sTCP:LISTEN
+  kill <PID>
+  ```
 
 ## Notes
 - The Rust core needs network access on the first build to download crates.

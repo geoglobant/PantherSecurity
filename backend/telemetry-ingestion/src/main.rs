@@ -56,7 +56,7 @@ async fn ingest_event(
         .map_err(|err| (StatusCode::INTERNAL_SERVER_ERROR, err.to_string()))?;
     let received_at = Utc::now().to_rfc3339();
 
-    let mut conn = state
+    let conn = state
         .db
         .lock()
         .map_err(|_| (StatusCode::INTERNAL_SERVER_ERROR, "storage lock".to_string()))?;
