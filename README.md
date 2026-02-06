@@ -144,6 +144,34 @@ curl "http://localhost:8082/v1/policies/current?app_id=fintech.mobile&app_versio
     -d '{"event_id":"evt_smoke","app_id":"fintech.mobile","app_version":"1.0.0","env":"local","device":{"platform":"ios","os_version":"17.0","model":"iPhone"},"signals":{"jailbreak":false,"root":false,"debugger":false,"hooking":false,"proxy_detected":false},"action":{"name":"login","context":null},"timestamp":"2026-02-06T21:00:00Z","signature":"stub"}'
 ```
 
+More validation examples:
+```bash
+# Status pages
+curl -i http://localhost:8081/
+curl -i http://localhost:8082/
+
+# List policies
+curl -i "http://localhost:8082/v1/policies?app_id=fintech.mobile"
+
+# Policy versions
+curl -i "http://localhost:8082/v1/policies/versions?app_id=fintech.mobile"
+
+# Create/update policy
+curl -i -X POST "http://localhost:8082/v1/policies" \
+  -H "Content-Type: application/json" \
+  -d '{"device_platform":"ios","policy":{"policy_id":"pol_001","app_id":"fintech.mobile","app_version":"1.0.0","env":"prod","rules":[{"action":"login","decision":"STEP_UP","conditions":{"debugger":false}}],"signature":"stub","issued_at":"2026-02-06T21:00:00Z"}}'
+
+# Upload report
+curl -i -X POST "http://localhost:8082/v1/reports/upload" \
+  -H "Content-Type: application/json" \
+  -d '{"report_id":"rep_001","app_id":"fintech.mobile","env":"staging","source":"ci","pipeline":{"provider":"github_actions","run_id":"123"},"artifacts":{"format":"sarif","payload":"base64..."},"timestamp":"2026-02-06T21:00:00Z"}'
+```
+
+If `API_TOKEN` is set, include:
+```bash
+-H "Authorization: Bearer <token>"
+```
+
 DB files are stored under `data/`:
 - `data/telemetry.db`
 - `data/policy.db`
