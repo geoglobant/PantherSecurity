@@ -114,7 +114,7 @@ fn check_db(state: &AppState) -> Result<(), String> {
         .db
         .lock()
         .map_err(|_| "db_lock".to_string())?;
-    conn.execute("SELECT 1", [])
+    conn.query_row("SELECT 1", [], |row| row.get::<_, i32>(0))
         .map_err(|err| err.to_string())?;
     Ok(())
 }

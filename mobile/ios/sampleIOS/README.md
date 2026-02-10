@@ -1,8 +1,48 @@
-# iOS Sample (Xcode)
+# iOS Sample (Fintech Demo)
 
-This sample project uses the PantherSecurity SDK via Swift Package Manager and provides a simple UI to test:
-- Fetch Policy
-- Send Login Telemetry
+This sample simulates a real fintech flow and shows how PantherSecurity reacts to sensitive actions.
+
+## Demo flow
+1. Sign in (login security check).
+2. Home screen with balance and quick actions.
+3. Actions: transfer, add beneficiary, view card, change password.
+4. The SDK evaluates each action and returns ALLOW / STEP_UP / DEGRADE / DENY.
+
+## Demo Mode (Security Lab)
+Open **Settings → Security Lab** to simulate:
+- jailbreak/root/debugger/hooking/proxy
+- attestation status
+- risk score
+
+This makes the app show real outcomes (block, step-up, degrade) during the flow.
+
+## Security options explained (7 total)
+The demo validates **7 security inputs** that affect policy decisions:
+- **Jailbreak**: iOS device integrity is compromised; policies may force `STEP_UP` or `DENY`.
+- **Root**: Android-style root signal; included for cross-platform parity. Treated as device compromise.
+- **Debugger**: Detects debugging or instrumentation. Often triggers `STEP_UP` or `DENY` on sensitive actions.
+- **Hooking**: Simulates runtime method hooking (e.g., Frida). Commonly degrades or blocks actions.
+- **Proxy/MITM**: Indicates traffic interception. Typically blocks transfers or sensitive actions.
+- **Attestation status**: Simulates attestation result (`pass`, `fail`, `unknown`, or unset). A `fail` usually forces `STEP_UP`/`DENY`.
+- **Risk score**: Server-calculated risk (0–100). Higher values can downgrade or block actions.
+
+## Security example docs
+Open the example guides in:
+- `docs/security-examples/mitm-proxy-pinning.md`
+- `docs/security-examples/debugger-hooking.md`
+- `docs/security-examples/device-integrity-jailbreak-root.md`
+- `docs/security-examples/attestation.md`
+- `docs/security-examples/bola-idor.md`
+- `docs/security-examples/risk-score.md`
+
+## Secure storage (API keys & user data)
+This sample now saves sensitive values using **Keychain**:
+- API token (simulated) saved after login
+- User email saved on login
+
+Where it lives in code:
+- `mobile/ios/sampleIOS/Sources/SampleApp/SecureStorage.swift`
+- `DemoState.login(...)` and `DemoState.logout()` in `SampleApp.swift`
 
 ## How to open in Xcode
 
@@ -17,49 +57,14 @@ This sample project uses the PantherSecurity SDK via Swift Package Manager and p
 ### Option B: open Package.swift directly
 1. Open `mobile/ios/sampleIOS/Package.swift` in Xcode.
 
-## How the SDK is added to the project
-The project uses Swift Package Manager pointing to the local SDK package:
-- `mobile/ios/Package.swift`
-
-In `Project.swift` (Tuist), the local package is referenced like this:
-```swift
-.package(path: "..")
-```
-And the target depends on the `PantherSecurity` product:
-```swift
-.package(product: "PantherSecurity")
-```
-
-## Xcode flow to load the SDK via Package
-1. Open `MobileAppSecSample.xcodeproj`.
-2. In Xcode, go to **File > Add Packages...**.
-3. Click **Add Local...** and select `mobile/ios`.
-4. Select the `PantherSecurity` product and confirm.
-5. The `MobileAppSecSample` target should list `PantherSecurity` in **Frameworks, Libraries, and Embedded Content**.
-
-## FFI: how to link the Rust core in Xcode
-The Swift wrapper calls C functions from the Rust core (FFI). To work at runtime, you must
-build the Rust core and link the library in Xcode.
-
-Suggested flow:
+## FFI: link the Rust core
 1. Build the Rust core for iOS device and simulator:
    ```bash
    scripts/install-ios-xcframework.sh
    ```
 2. The xcframework will be copied to `mobile/ios/sampleIOS/Frameworks/PantherSecurityCore.xcframework`.
 3. In Xcode, add the xcframework in **Frameworks, Libraries, and Embedded Content**.
-4. Make sure the header `core/rust-core/include/panther_security.h` is available in the project.
 
 ## Tips
 - After running `scripts/install-ios-xcframework.sh`, run `tuist generate` again.
-- If Xcode cannot see the xcframework, clean DerivedData and reopen the project.
-- Keep the xcframework inside `mobile/ios/sampleIOS/Frameworks` so Tuist links it automatically.
 - If you see `Undefined symbol: _ps_*`, rebuild the xcframework after updating the Rust core.
-
-## Running the sample
-1. Start the local backend:
-   ```bash
-   scripts/run-backend.sh
-   ```
-2. Run the app in the iOS simulator.
-3. Use the buttons to trigger policy and telemetry calls.

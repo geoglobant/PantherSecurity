@@ -1,16 +1,25 @@
-# Android Sample (Clean Architecture)
+# Android Sample (Fintech Demo)
 
-Initial Android project with structure equivalent to iOS (Domain/Data/Presentation) and an SDK stub.
+This sample simulates a real fintech app flow and shows how PantherSecurity reacts to sensitive actions.
+
+## Demo flow
+1. Sign in (login security check).
+2. Home screen with balance and quick actions.
+3. Actions: transfer, add beneficiary, view card, change password.
+4. The SDK evaluates each action and returns ALLOW / STEP_UP / DEGRADE / DENY.
+
+## Demo Mode (Security Lab)
+Use **Demo Mode (Security Lab)** to simulate:
+- jailbreak/root/debugger/hooking/proxy
+- attestation status
+- risk score
+
+This makes the app show real outcomes (block, step-up, degrade) during the flow.
 
 ## How to open
 1. Open `mobile/android` in Android Studio.
 2. Wait for Gradle sync.
-
-## Structure
-- `domain/`: entities and use cases
-- `data/`: repositories
-- `presentation/`: view model
-- `sdk/`: PantherSecurity SDK (stub)
+3. Run the `app` configuration.
 
 ## Note
-The Android SDK is still a stub and must be connected to the Rust core/FFI later.
+Android SDK is still a stub and must be connected to Rust core/FFI later.

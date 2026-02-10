@@ -12,8 +12,8 @@ use axum::{
 use chrono::Utc;
 use rusqlite::{params, Connection};
 use rust_core::adapters::serialization::{
-    validate_policy, validate_report_upload, DecisionDto, PolicyConditionsDto, PolicyDto,
-    PolicyRuleDto, PolicyUpsertDto, PolicyUpsertResponse, ReportUploadDto,
+    validate_policy, validate_report_upload, AttestationStatusDto, DecisionDto, PolicyConditionsDto,
+    PolicyDto, PolicyRuleDto, PolicyUpsertDto, PolicyUpsertResponse, ReportUploadDto,
 };
 use serde::Deserialize;
 use tracing::info;
@@ -227,18 +227,80 @@ fn default_policy(app_id: &str, app_version: &str, env: &str) -> PolicyDto {
         app_id: app_id.to_string(),
         app_version: app_version.to_string(),
         env: env.to_string(),
-        rules: vec![PolicyRuleDto {
-            action: "login".to_string(),
-            decision: DecisionDto::StepUp,
-            conditions: Some(PolicyConditionsDto {
-                attestation: None,
-                debugger: Some(false),
-                hooking: Some(false),
-                proxy_detected: Some(false),
-                app_version: None,
-                risk_score_gte: None,
-            }),
-        }],
+        rules: vec![
+            PolicyRuleDto {
+                action: "login".to_string(),
+                decision: DecisionDto::StepUp,
+                conditions: Some(PolicyConditionsDto {
+                    attestation: None,
+                    debugger: Some(true),
+                    hooking: None,
+                    proxy_detected: None,
+                    app_version: None,
+                    risk_score_gte: None,
+                }),
+            },
+            PolicyRuleDto {
+                action: "transfer".to_string(),
+                decision: DecisionDto::Deny,
+                conditions: Some(PolicyConditionsDto {
+                    attestation: None,
+                    debugger: None,
+                    hooking: None,
+                    proxy_detected: Some(true),
+                    app_version: None,
+                    risk_score_gte: None,
+                }),
+            },
+            PolicyRuleDto {
+                action: "transfer".to_string(),
+                decision: DecisionDto::StepUp,
+                conditions: Some(PolicyConditionsDto {
+                    attestation: None,
+                    debugger: None,
+                    hooking: None,
+                    proxy_detected: None,
+                    app_version: None,
+                    risk_score_gte: Some(70),
+                }),
+            },
+            PolicyRuleDto {
+                action: "view_card".to_string(),
+                decision: DecisionDto::Degrade,
+                conditions: Some(PolicyConditionsDto {
+                    attestation: None,
+                    debugger: None,
+                    hooking: Some(true),
+                    proxy_detected: None,
+                    app_version: None,
+                    risk_score_gte: None,
+                }),
+            },
+            PolicyRuleDto {
+                action: "add_beneficiary".to_string(),
+                decision: DecisionDto::StepUp,
+                conditions: Some(PolicyConditionsDto {
+                    attestation: Some(AttestationStatusDto::Fail),
+                    debugger: None,
+                    hooking: None,
+                    proxy_detected: None,
+                    app_version: None,
+                    risk_score_gte: None,
+                }),
+            },
+            PolicyRuleDto {
+                action: "change_password".to_string(),
+                decision: DecisionDto::Deny,
+                conditions: Some(PolicyConditionsDto {
+                    attestation: None,
+                    debugger: None,
+                    hooking: None,
+                    proxy_detected: None,
+                    app_version: Some("1.0.0".to_string()),
+                    risk_score_gte: None,
+                }),
+            },
+        ],
         signature: "stub".to_string(),
         issued_at: Utc::now().to_rfc3339(),
     }
@@ -295,7 +357,7 @@ fn check_db(state: &AppState) -> Result<(), String> {
         .db
         .lock()
         .map_err(|_| "db_lock".to_string())?;
-    conn.execute("SELECT 1", [])
+    conn.query_row("SELECT 1", [], |row| row.get::<_, i32>(0))
         .map_err(|err| err.to_string())?;
     Ok(())
 }

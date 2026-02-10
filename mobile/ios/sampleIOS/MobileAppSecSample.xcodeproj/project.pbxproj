@@ -7,8 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		22A73F20A21B69C7A9713188 /* SecurityPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5F2645EB5F4F0A9F1ACD7D /* SecurityPolicyTests.swift */; };
+		2A83BA1CDCD53FE68FF59DBC /* PantherSecurityCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74EA0ACB06454688707AA2C7 /* PantherSecurityCore.xcframework */; };
 		336C1FD240B928213591C74A /* PantherSecurityCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74EA0ACB06454688707AA2C7 /* PantherSecurityCore.xcframework */; };
 		5EE68BB0471A1519AAE55481 /* PantherSecurity in Frameworks */ = {isa = PBXBuildFile; productRef = ADD4367B22F1400DC2D2C4BC /* PantherSecurity */; };
+		6AD190B068D4918E121EBD7D /* PantherSecurity in Frameworks */ = {isa = PBXBuildFile; productRef = 7D6B20960E212AC8ADEE6EFD /* PantherSecurity */; };
+		D58EBD5BECCA2795AD074119 /* SecureStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69160BBAEBB8B7C8A4D1FE4 /* SecureStorage.swift */; };
 		F8077D7C1DC3D8D47D4CF493 /* SampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57863AD27FD4842632C67C9 /* SampleApp.swift */; };
 /* End PBXBuildFile section */
 
@@ -23,17 +27,40 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DD92CE72788F57EA7434F13A /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2A5F2645EB5F4F0A9F1ACD7D /* SecurityPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityPolicyTests.swift; sourceTree = "<group>"; };
 		2AA12EFDEA3D790629ED9A05 /* MobileAppSecSample-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "MobileAppSecSample-Info.plist"; sourceTree = "<group>"; };
 		5E44E14533A90BF3EFB2C69E /* MobileAppSecSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MobileAppSecSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		74EA0ACB06454688707AA2C7 /* PantherSecurityCore.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = PantherSecurityCore.xcframework; sourceTree = "<group>"; };
 		97C5BDC1579A81F2FC4BB3B4 /* ios */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ios; path = ..; sourceTree = "<group>"; };
+		B69160BBAEBB8B7C8A4D1FE4 /* SecureStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureStorage.swift; sourceTree = "<group>"; };
+		C28E3880C76E8AEB183C422A /* MobileAppSecSampleTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "MobileAppSecSampleTests-Info.plist"; sourceTree = "<group>"; };
 		C57863AD27FD4842632C67C9 /* SampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleApp.swift; sourceTree = "<group>"; };
+		F74617BF89396CD957CE542C /* MobileAppSecSampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MobileAppSecSampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		51ED1A8A474C055A8AE9BEFC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2A83BA1CDCD53FE68FF59DBC /* PantherSecurityCore.xcframework in Frameworks */,
+				6AD190B068D4918E121EBD7D /* PantherSecurity in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7214A4EDF8F5999B8DCDF291 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -54,10 +81,19 @@
 			path = Sources;
 			sourceTree = "<group>";
 		};
+		4E3E032272E6A183AE00AE8A /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				2A5F2645EB5F4F0A9F1ACD7D /* SecurityPolicyTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
 		5BB315DFA840D7630EFC0C60 /* InfoPlists */ = {
 			isa = PBXGroup;
 			children = (
 				2AA12EFDEA3D790629ED9A05 /* MobileAppSecSample-Info.plist */,
+				C28E3880C76E8AEB183C422A /* MobileAppSecSampleTests-Info.plist */,
 			);
 			path = InfoPlists;
 			sourceTree = "<group>";
@@ -66,6 +102,7 @@
 			isa = PBXGroup;
 			children = (
 				5E44E14533A90BF3EFB2C69E /* MobileAppSecSample.app */,
+				F74617BF89396CD957CE542C /* MobileAppSecSampleTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -107,6 +144,7 @@
 			isa = PBXGroup;
 			children = (
 				C57863AD27FD4842632C67C9 /* SampleApp.swift */,
+				B69160BBAEBB8B7C8A4D1FE4 /* SecureStorage.swift */,
 			);
 			path = SampleApp;
 			sourceTree = "<group>";
@@ -117,6 +155,7 @@
 				B35E550CA83C6B4E18383DCE /* Derived */,
 				8319B5ABCBA8665884C1C0A0 /* Frameworks */,
 				03879BBE6CDBECE7F6D6265F /* Sources */,
+				4E3E032272E6A183AE00AE8A /* Tests */,
 			);
 			name = Project;
 			sourceTree = "<group>";
@@ -145,6 +184,27 @@
 			productReference = 5E44E14533A90BF3EFB2C69E /* MobileAppSecSample.app */;
 			productType = "com.apple.product-type.application";
 		};
+		648641E60A4CDD19297E9186 /* MobileAppSecSampleTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 11B06B486BFB9282FA384CA2 /* Build configuration list for PBXNativeTarget "MobileAppSecSampleTests" */;
+			buildPhases = (
+				BC1E4BD7F24611FF0D1A35FE /* Sources */,
+				FBEB451F760F5D1D76E44219 /* Resources */,
+				51ED1A8A474C055A8AE9BEFC /* Frameworks */,
+				DD92CE72788F57EA7434F13A /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MobileAppSecSampleTests;
+			packageProductDependencies = (
+				7D6B20960E212AC8ADEE6EFD /* PantherSecurity */,
+			);
+			productName = MobileAppSecSampleTests;
+			productReference = F74617BF89396CD957CE542C /* MobileAppSecSampleTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -172,12 +232,20 @@
 			projectRoot = "";
 			targets = (
 				19B71A59D2762BCFC1C4FA3C /* MobileAppSecSample */,
+				648641E60A4CDD19297E9186 /* MobileAppSecSampleTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		49DC2C5197D75AF381CAFCD7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FBEB451F760F5D1D76E44219 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -192,12 +260,49 @@
 			buildActionMask = 2147483647;
 			files = (
 				F8077D7C1DC3D8D47D4CF493 /* SampleApp.swift in Sources */,
+				D58EBD5BECCA2795AD074119 /* SecureStorage.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BC1E4BD7F24611FF0D1A35FE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				22A73F20A21B69C7A9713188 /* SecurityPolicyTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		3CEEE3C3690B1E10F4352C46 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/Frameworks",
+				);
+				INFOPLIST_FILE = "Derived/InfoPlists/MobileAppSecSampleTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.panther.mobileappsecsample.tests;
+				PRODUCT_NAME = MobileAppSecSampleTests;
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		67E76D0673F0328108E41122 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -374,9 +479,50 @@
 			};
 			name = Release;
 		};
+		ED7CE7D26B5BA678A9B5A19F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/Frameworks",
+				);
+				INFOPLIST_FILE = "Derived/InfoPlists/MobileAppSecSampleTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.panther.mobileappsecsample.tests;
+				PRODUCT_NAME = MobileAppSecSampleTests;
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
+					"$(inherited)",
+					DEBUG,
+				);
+				SWIFT_COMPILATION_MODE = singlefile;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		11B06B486BFB9282FA384CA2 /* Build configuration list for PBXNativeTarget "MobileAppSecSampleTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ED7CE7D26B5BA678A9B5A19F /* Debug */,
+				3CEEE3C3690B1E10F4352C46 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		54DBE0D5C3209CCB377BB702 /* Build configuration list for PBXProject "MobileAppSecSample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -405,6 +551,10 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		7D6B20960E212AC8ADEE6EFD /* PantherSecurity */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PantherSecurity;
+		};
 		ADD4367B22F1400DC2D2C4BC /* PantherSecurity */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = PantherSecurity;

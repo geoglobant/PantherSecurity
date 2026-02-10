@@ -11,7 +11,74 @@ class PantherSecuritySdk(private val config: PantherSecurityConfig) {
                 PantherSecurityPolicyRule(
                     action = "login",
                     decision = "STEP_UP",
-                    conditions = null
+                    conditions = PantherSecurityPolicyConditions(
+                        attestation = null,
+                        debugger = true,
+                        hooking = null,
+                        proxyDetected = null,
+                        appVersion = null,
+                        riskScoreGte = null
+                    )
+                ),
+                PantherSecurityPolicyRule(
+                    action = "transfer",
+                    decision = "DENY",
+                    conditions = PantherSecurityPolicyConditions(
+                        attestation = null,
+                        debugger = null,
+                        hooking = null,
+                        proxyDetected = true,
+                        appVersion = null,
+                        riskScoreGte = null
+                    )
+                ),
+                PantherSecurityPolicyRule(
+                    action = "transfer",
+                    decision = "STEP_UP",
+                    conditions = PantherSecurityPolicyConditions(
+                        attestation = null,
+                        debugger = null,
+                        hooking = null,
+                        proxyDetected = null,
+                        appVersion = null,
+                        riskScoreGte = 70
+                    )
+                ),
+                PantherSecurityPolicyRule(
+                    action = "view_card",
+                    decision = "DEGRADE",
+                    conditions = PantherSecurityPolicyConditions(
+                        attestation = null,
+                        debugger = null,
+                        hooking = true,
+                        proxyDetected = null,
+                        appVersion = null,
+                        riskScoreGte = null
+                    )
+                ),
+                PantherSecurityPolicyRule(
+                    action = "add_beneficiary",
+                    decision = "STEP_UP",
+                    conditions = PantherSecurityPolicyConditions(
+                        attestation = "fail",
+                        debugger = null,
+                        hooking = null,
+                        proxyDetected = null,
+                        appVersion = null,
+                        riskScoreGte = null
+                    )
+                ),
+                PantherSecurityPolicyRule(
+                    action = "change_password",
+                    decision = "DENY",
+                    conditions = PantherSecurityPolicyConditions(
+                        attestation = null,
+                        debugger = null,
+                        hooking = null,
+                        proxyDetected = null,
+                        appVersion = "1.0.0",
+                        riskScoreGte = null
+                    )
                 )
             ),
             signature = "stub",

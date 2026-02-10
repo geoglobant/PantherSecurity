@@ -19,6 +19,20 @@ let project = Project(
                 .package(product: "PantherSecurity"),
                 .xcframework(path: "Frameworks/PantherSecurityCore.xcframework")
             ]
+        ),
+        .target(
+            name: "MobileAppSecSampleTests",
+            destinations: .iOS,
+            product: .unitTests,
+            bundleId: "com.panther.mobileappsecsample.tests",
+            deploymentTargets: .iOS("16.0"),
+            infoPlist: .default,
+            sources: ["Tests/**"],
+            resources: [],
+            dependencies: [
+                .package(product: "PantherSecurity"),
+                .xcframework(path: "Frameworks/PantherSecurityCore.xcframework")
+            ]
         )
     ]
 )

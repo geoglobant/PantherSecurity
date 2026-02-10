@@ -20,6 +20,20 @@
                ReferencedContainer = "container:MobileAppSecSample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "648641E60A4CDD19297E9186"
+               BuildableName = "MobileAppSecSampleTests.xctest"
+               BlueprintName = "MobileAppSecSampleTests"
+               ReferencedContainer = "container:MobileAppSecSample.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -28,6 +42,17 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "648641E60A4CDD19297E9186"
+               BuildableName = "MobileAppSecSampleTests.xctest"
+               BlueprintName = "MobileAppSecSampleTests"
+               ReferencedContainer = "container:MobileAppSecSample.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

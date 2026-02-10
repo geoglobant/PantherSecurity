@@ -23,6 +23,10 @@
 artifacts/
 mobile/ios/sampleIOS/Frameworks/
 
+# Local data / editor config
+data/
+.vscode/
+
 # Logs / temp
 *.log
 *.tmp

@@ -1,22 +1,207 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="24dp">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="PantherSecurity Sample"
-        android:textSize="20sp" />
+        android:orientation="vertical"
+        android:padding="24dp">
 
-    <TextView
-        android:id="@+id/status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="Status: idle" />
+        <LinearLayout
+            android:id="@+id/loginContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-</LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Panther Bank"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Secure your money with continuous protection" />
+
+            <EditText
+                android:id="@+id/loginEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="Email"
+                android:inputType="textEmailAddress" />
+
+            <EditText
+                android:id="@+id/loginPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Password"
+                android:inputType="textPassword" />
+
+            <Button
+                android:id="@+id/signIn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Sign In" />
+
+            <TextView
+                android:id="@+id/loginSecurity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Security check: -" />
+
+            <TextView
+                android:id="@+id/loginMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="-" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/homeContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Panther Bank"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Good evening, Maria" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Available balance" />
+
+            <TextView
+                android:id="@+id/balance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$ 12,480.90"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Status: idle" />
+
+            <TextView
+                android:id="@+id/policy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Policy: -" />
+
+            <TextView
+                android:id="@+id/decision"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Decision: -" />
+
+            <TextView
+                android:id="@+id/validations"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Validations: -" />
+
+            <TextView
+                android:id="@+id/actionResult"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="" />
+
+            <Button
+                android:id="@+id/fetchPolicy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Fetch Policy" />
+
+            <Button
+                android:id="@+id/sendTelemetry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Send Telemetry (Selected Action)" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Card" />
+
+            <TextView
+                android:id="@+id/cardNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="•••• •••• •••• ••••"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/actionViewCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="View Card" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Financial Actions" />
+
+            <Button
+                android:id="@+id/actionTransfer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Transfer / Pix" />
+
+            <Button
+                android:id="@+id/actionAddBeneficiary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Add Beneficiary" />
+
+            <Button
+                android:id="@+id/actionChangePassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Change Password" />
+
+            <Button
+                android:id="@+id/openSecurityLab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Demo Mode (Security Lab)" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

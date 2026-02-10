@@ -120,3 +120,132 @@ impl PolicyEngine {
         Decision::Allow
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::domain::risk::RiskScore;
+    use crate::domain::telemetry::{ActionContext, AttestationProvider, AttestationResult, AttestationStatus, IntegritySignals};
+
+    fn base_signals() -> IntegritySignals {
+        IntegritySignals {
+            jailbreak: false,
+            root: false,
+            debugger: false,
+            hooking: false,
+            proxy_detected: false,
+        }
+    }
+
+    fn action(name: &str) -> ActionContext {
+        ActionContext {
+            name: name.to_string(),
+            context: None,
+        }
+    }
+
+    fn attestation(status: AttestationStatus) -> AttestationResult {
+        AttestationResult {
+            provider: AttestationProvider::AppAttest,
+            status,
+            timestamp: None,
+        }
+    }
+
+    #[test]
+    fn rule_matches_on_action_and_debugger_signal() {
+        let rule = PolicyRule {
+            action: "login".to_string(),
+            decision: Decision::StepUp,
+            conditions: PolicyConditions {
+                debugger: Some(true),
+                ..PolicyConditions::default()
+            },
+        };
+
+        let ctx = action("login");
+        let mut signals = base_signals();
+        signals.debugger = true;
+
+        assert!(rule.matches(&ctx, &signals, None, RiskScore::new(5), "1.0.0"));
+
+        signals.debugger = false;
+        assert!(!rule.matches(&ctx, &signals, None, RiskScore::new(5), "1.0.0"));
+    }
+
+    #[test]
+    fn rule_matches_attestation_and_risk_score() {
+        let rule = PolicyRule {
+            action: "transfer".to_string(),
+            decision: Decision::Deny,
+            conditions: PolicyConditions {
+                attestation_status: Some(AttestationStatus::Fail),
+                risk_score_gte: Some(70),
+                ..PolicyConditions::default()
+            },
+        };
+
+        let ctx = action("transfer");
+        let signals = base_signals();
+        let att = attestation(AttestationStatus::Fail);
+
+        assert!(rule.matches(&ctx, &signals, Some(&att), RiskScore::new(80), "1.0.0"));
+        assert!(!rule.matches(&ctx, &signals, Some(&att), RiskScore::new(50), "1.0.0"));
+    }
+
+    #[test]
+    fn policy_engine_returns_first_matching_rule() {
+        let policy = PolicySet {
+            policy_id: "policy".to_string(),
+            app_id: "fintech.mobile".to_string(),
+            app_version: "1.0.0".to_string(),
+            env: "local".to_string(),
+            rules: vec![
+                PolicyRule {
+                    action: "view_card".to_string(),
+                    decision: Decision::Deny,
+                    conditions: PolicyConditions {
+                        hooking: Some(true),
+                        ..PolicyConditions::default()
+                    },
+                },
+                PolicyRule {
+                    action: "view_card".to_string(),
+                    decision: Decision::Allow,
+                    conditions: PolicyConditions::default(),
+                },
+            ],
+        };
+
+        let ctx = action("view_card");
+        let mut signals = base_signals();
+        signals.hooking = true;
+
+        let decision = PolicyEngine::evaluate(&policy, &ctx, &signals, None, RiskScore::new(10));
+        assert_eq!(decision, Decision::Deny);
+    }
+
+    #[test]
+    fn policy_engine_defaults_to_allow_when_no_match() {
+        let policy = PolicySet {
+            policy_id: "policy".to_string(),
+            app_id: "fintech.mobile".to_string(),
+            app_version: "1.0.0".to_string(),
+            env: "local".to_string(),
+            rules: vec![PolicyRule {
+                action: "transfer".to_string(),
+                decision: Decision::Deny,
+                conditions: PolicyConditions {
+                    proxy_detected: Some(true),
+                    ..PolicyConditions::default()
+                },
+            }],
+        };
+
+        let ctx = action("transfer");
+        let signals = base_signals();
+
+        let decision = PolicyEngine::evaluate(&policy, &ctx, &signals, None, RiskScore::new(10));
+        assert_eq!(decision, Decision::Allow);
+    }
+}
